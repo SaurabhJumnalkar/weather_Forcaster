@@ -67,17 +67,23 @@ class ChartData(APIView):
         datav_json_data=json.loads(datavres)
         date=[]
         temperature=[]
+        pressure=[]
         for i in range(15):
             date.append(str(datav_json_data['days'][i]['datetime']))
             temperature.append(datav_json_data['days'][i]['temp'])
+            pressure.append(datav_json_data['days'][i]['pressure'])
         chartLabel = "my data"
         chartdata = []
         labels=[]
         labels=date
+        desc=datav_json_data['description']
         chartdata=temperature
+        pressure_chardata=pressure
         data ={
                      "labels":labels,
                      "chartLabel":chartLabel,
                      "chartdata":chartdata,
+                     "pressureData":pressure_chardata,
+                     'desc':desc,
              }
         return Response(data)

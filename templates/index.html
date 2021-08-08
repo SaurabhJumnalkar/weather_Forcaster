@@ -51,11 +51,13 @@
     }
     .data{
       margin-top: 15px;
-      background-color: aqua;
+      background-color: rgb(105, 241, 241);
       margin-right: 20px;
+      
     }
-    .info{
+    .desc{
       margin-bottom: 10px;
+      margin-top: 20px;
 
     }
     .city,.temp{
@@ -88,10 +90,10 @@
         </div>
         <form>
   </center>
-  <div class="row">
     {% if data.country_code %}
-    <div class="col-md-6 data">
-      <h1 class="city">{{city}}</h1>
+    <div class="data">
+      <div class="col-md-6">
+        <h1 class="city">{{city}}</h1>
       <h3 class="temp">Temp : {{data.temp}} <sup>0</sup>C</h3>
       <div class="flex">
       <h2 class="desc">{{data.desc}} </h2>
@@ -107,13 +109,16 @@
         <h5>Humidity : {{data.humidity}}</h5>
         </div>
       </div>
-        
+      </div>
+      <div class="col-md-6">
+           <!-- Map-->
+          <div id="map"class="row"></div>
+     </div>
         
     </div>
 
 
-    <!-- Map-->
-    <div id="map"class="row"></div>
+    
     <script>
       mapboxgl.accessToken =
         "pk.eyJ1Ijoic2F1cmFiaGp1bW5hbGthciIsImEiOiJja3JpMXp1bXcycXhxMnBxdXptcWhubDd3In0.Z15Jr5hPGMPMMKb_QmnNDg";
@@ -135,16 +140,17 @@
     
     
     <!-- Weather Data Visualization -->
-    <button class="btn btn-primary info text-center center-block" type="button" data-toggle="collapse"  href="#datavisu" role="button" aria-expanded="false" aria-controls="details" >MORE INFO</button>
+    <button class="btn btn-primary desc text-center center-block" type="button" data-toggle="collapse"  href="#datavisu" role="button" aria-expanded="false" aria-controls="details" >Weather Forcast</button>
     <div class="collapse" id="datavisu">
       <div class="card card-body">
-        <center class="row">
-          <h1>implementation of <b>chartJS</b> using <b>django</b></h1>
-        </center>
         <hr />
+        <h3 class="text-center text-success"id="DESC"></h3>
         <div class="row">
-          <div class="center-block data-visu">
-            <canvas id="myChartline"></canvas>
+          <div class="col-md-6">
+            <canvas id="myChartline1"></canvas>
+          </div>
+          <div class="col-md-6">
+            <canvas id="myChartline2"></canvas>
           </div>
       </div>
     </div>
@@ -160,18 +166,22 @@
       method: "GET",
       url: endpoint,
       success: function(data) {
-        drawLineGraph(data, 'myChartline');
-        console.log("drawing");
+        document.getElementById("DESC").innerHTML = data.desc;
+
+        drawLineGraph(data, 'myChartline1',data.pressureData,'Pressure','rgb(209, 39, 33)');
+        console.log(data.pressureData);
+        drawLineGraph(data, 'myChartline2',data.chartdata,'Temperature','rgb(55, 99, 132)');
+        console.log(data.chartdata);
       },
       error: function(error_data) {
         console.log(error_data);
       }
     })    
   // drawLineGraph function   
-  function drawLineGraph(data, id) {
+  function drawLineGraph(data, id,chart_data,dataHeading,color) {
       var labels = data.labels;
       var chartLabel = data.chartLabel;
-      var chartdata = data.chartdata;
+      var chartdata = chart_data;
         var ctx = document.getElementById(id).getContext('2d');
         var chart = new Chart(ctx, {
           // The type of chart we want to create
@@ -181,10 +191,12 @@
           data: {
             labels: labels,
             datasets: [{
-              label: chartLabel,
-              borderColor: 'rgb(55, 99, 132)',
+              label:dataHeading,
+              borderColor:color,
               data: chartdata,
-            }]
+              
+            },
+          ]
           },
     
           // Configuration options go here
@@ -197,7 +209,9 @@
                 ticks: {
                   beginAtZero:false
                 }
-              }]
+              }],
+              
+              
             }
           }
     
