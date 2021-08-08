@@ -62,8 +62,8 @@
       font-family: 'Londrina Solid', cursive;
     }
     .data-visu{
-      height: 20%;
-      width: 20%;
+      height: 50%;
+      width: 50%;
     }
   </style>
 
@@ -130,7 +130,7 @@
         marker = new mapboxgl.Marker() // initialize a new marker
           .setLngLat(la) // Marker [lng, lat] coordinates
           .addTo(map);
-      map.addControl(geocoder);
+      
     </script>
     
     
@@ -151,37 +151,27 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
-      var endpoint = '/api';
-    
       
-      var data={
-      "labels": [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July"
-      ],
-      "chartLabel": "my data",
-      "chartdata": [
-          10,
-          10,
-          5,
-          2,
-          20,
-          30,
-          45
-      ]
-  };
-  // drawLineGraph function
-  drawLineGraph(data, 'myChartline');
-        
+  
+  var endpoint = '/api';
+  
+    
+    $.ajax({
+      method: "GET",
+      url: endpoint,
+      success: function(data) {
+        drawLineGraph(data, 'myChartline');
+        console.log("drawing");
+      },
+      error: function(error_data) {
+        console.log(error_data);
+      }
+    })    
+  // drawLineGraph function   
   function drawLineGraph(data, id) {
-        var labels = data.labels;
-        var chartLabel = data.chartLabel;
-        var chartdata = data.chartdata;
+      var labels = data.labels;
+      var chartLabel = data.chartLabel;
+      var chartdata = data.chartdata;
         var ctx = document.getElementById(id).getContext('2d');
         var chart = new Chart(ctx, {
           // The type of chart we want to create

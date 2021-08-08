@@ -1,12 +1,21 @@
+from datetime import datetime, tzinfo
+from time import timezone
 from django.shortcuts import render
 import json
 import urllib.request
+from rest_framework.views import APIView
+from rest_framework.response import Response
+import urllib.request
+import requests
 
 # Create your views here.
+
+
 def index(request):
     la=[]
     if request.method == 'POST':
-        city = request.POST['city']
+        global city 
+        city= request.POST['city']
         res = urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=5462ecc549d1ec03a3aa9f597e7075d0').read()
         json_data = json.loads(res)
         desc_string=str(json_data['weather'][0]['description']).upper()
@@ -24,7 +33,51 @@ def index(request):
             "icon":str(json_data['weather'][0]['icon'])
         }
 
+
     else:
         city = ''
         data = {}
     return render(request, 'index.html', {'city': city, 'data': data,'la':la})
+
+####################################################
+   
+## if you don't want to user rest_framework
+   
+# def get_data(request, *args, **kwargs):
+#
+# data ={
+#             "sales" : 100,
+#             "person": 10000,
+#     }
+#
+# return JsonResponse(data) # http response
+   
+   
+#######################################################
+
+
+## using rest_framework classes
+   
+class ChartData(APIView):
+    authentication_classes = []
+    permission_classes = []
+    
+    def get(self, request, format = None):
+        datavres=urllib.request.urlopen('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'+city+'?unitGroup=metric&key=U8XMTFZLWN2Y59MYJMERZGT6U&include=fcst%2Cstats%2Calerts%2Ccurrent').read()
+        datav_json_data=json.loads(datavres)
+        date=[]
+        temperature=[]
+        for i in range(15):
+            date.append(str(datav_json_data['days'][i]['datetime']))
+            temperature.append(datav_json_data['days'][i]['temp'])
+        chartLabel = "my data"
+        chartdata = []
+        labels=[]
+        labels=date
+        chartdata=temperature
+        data ={
+                     "labels":labels,
+                     "chartLabel":chartLabel,
+                     "chartdata":chartdata,
+             }
+        return Response(data)
