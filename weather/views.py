@@ -7,13 +7,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import urllib.request
 import requests
-
 # Create your views here.
 
 
 def index(request):
+    #Showing Weather Report And Map Location
     la=[]
-    if request.method == 'POST':
+    if request.method == 'POST' and "city":
         global city 
         city= request.POST['city']
         res = urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=5462ecc549d1ec03a3aa9f597e7075d0').read()
@@ -32,12 +32,17 @@ def index(request):
             "desc":desc_string,
             "icon":str(json_data['weather'][0]['icon'])
         }
+        # geores=urllib.request.urlopen('https://api.hostip.info/get_json.php').read()
+        # geores=json.loads(geores)
+        # print(geores)
+        return render(request, 'index.html', {'city': city, 'data': data,'la':la})
 
-
+    
     else:
         city = ''
         data = {}
-    return render(request, 'index.html', {'city': city, 'data': data,'la':la})
+        la=[]
+        return render(request, 'index.html', {'city': city, 'data': data,'la':la})
 
 ####################################################
    
