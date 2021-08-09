@@ -51,22 +51,28 @@
     }
     .data{
       margin-top: 15px;
-      background-color: rgb(105, 241, 241);
+      
       margin-right: 20px;
       
     }
     .desc{
+      
       margin-bottom: 10px;
       margin-top: 20px;
 
     }
-    .city,.temp{
+    .desc_data{
+      margin-left: 45%;
+      margin-top: 20px;
+    }
+    .city,.temp,#DESC{
       font-family: 'Londrina Solid', cursive;
     }
     .data-visu{
       height: 50%;
       width: 50%;
     }
+
   </style>
 
 
@@ -74,7 +80,7 @@
 
 <body>
   <nav class="row text-center" style="background-color: #512D6D;">
-    <div><h1 class="heading">WEATHER DETECTOR</h1></div>
+    <div><h1 class="heading">WEATHER FORECASTER</h1></div>
   </nav>
   <br />
   <br />
@@ -92,7 +98,7 @@
   </center>
     {% if data.country_code %}
     <div class="data">
-      <div class="col-md-6">
+      <div class="col-md-6 report">
         <h1 class="city">{{city}}</h1>
       <h3 class="temp">Temp : {{data.temp}} <sup>0</sup>C</h3>
       <div class="flex">
@@ -140,11 +146,11 @@
     
     
     <!-- Weather Data Visualization -->
-    <button class="btn btn-primary desc text-center center-block" type="button" data-toggle="collapse"  href="#datavisu" role="button" aria-expanded="false" aria-controls="details" >Weather Forcast</button>
+    <button class="btn btn-primary desc_data text-center" type="button" data-toggle="collapse"  href="#datavisu" role="button" aria-expanded="false" aria-controls="details" >Weather Forcast</button>
     <div class="collapse" id="datavisu">
       <div class="card card-body">
         <hr />
-        <h3 class="text-center text-success"id="DESC"></h3>
+        <h3 class="text-center text-success text-capitalize bg-info"id="DESC"></h3>
         <div class="row">
           <div class="col-md-6">
             <canvas id="myChartline1"></canvas>
