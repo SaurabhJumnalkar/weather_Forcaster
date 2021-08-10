@@ -17,6 +17,7 @@
 ![weather_3](https://user-images.githubusercontent.com/67917361/128664421-de5d21c7-f80a-4e08-b1d6-680cae5a226c.png)
 
 >Data Visualization of Forecasted data for next 2 Weeks
+![weather_5](https://user-images.githubusercontent.com/67917361/128849037-e54f2d19-5e86-47a3-bfc3-e3a0e2bd3450.png)
 ![weather_4](https://user-images.githubusercontent.com/67917361/128664430-dfc2d624-b8ba-46c9-8c50-0146581322ef.png)
 
 ## Installation
