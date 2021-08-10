@@ -73,10 +73,15 @@ class ChartData(APIView):
         date=[]
         temperature=[]
         pressure=[]
+        humidity=[]
+        windspeed=[]
         for i in range(15):
             date.append(str(datav_json_data['days'][i]['datetime']))
             temperature.append(datav_json_data['days'][i]['temp'])
             pressure.append(datav_json_data['days'][i]['pressure'])
+            humidity.append(datav_json_data['days'][i]['humidity'])
+            windspeed.append(datav_json_data['days'][i]['windspeed'])
+
         chartLabel = "my data"
         chartdata = []
         labels=[]
@@ -90,5 +95,7 @@ class ChartData(APIView):
                      "chartdata":chartdata,
                      "pressureData":pressure_chardata,
                      'desc':desc,
+                     "humidity":humidity,
+                     "windspeed":windspeed,
              }
         return Response(data)

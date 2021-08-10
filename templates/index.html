@@ -43,7 +43,7 @@
     }
     .row{
       padding: 5px;
-
+      margin-top: 20px;
     }
 
     .weather_icon{
@@ -151,13 +151,18 @@
       <div class="card card-body">
         <hr />
         <h3 class="text-center text-success text-capitalize bg-info"id="DESC"></h3>
+        <div class="col-md-offset-3  col-md-6">
+          <canvas id="myradar"></canvas>
+        </div>
         <div class="row">
+
           <div class="col-md-6">
             <canvas id="myChartline1"></canvas>
           </div>
           <div class="col-md-6">
             <canvas id="myChartline2"></canvas>
           </div>
+          
       </div>
     </div>
 
@@ -175,9 +180,10 @@
         document.getElementById("DESC").innerHTML = data.desc;
 
         drawLineGraph(data, 'myChartline1',data.pressureData,'Pressure','rgb(209, 39, 33)');
-        console.log(data.pressureData);
+        
         drawLineGraph(data, 'myChartline2',data.chartdata,'Temperature','rgb(55, 99, 132)');
-        console.log(data.chartdata);
+        
+        drawradarGrah(data);
       },
       error: function(error_data) {
         console.log(error_data);
@@ -223,7 +229,57 @@
     
         });
       }
-    
+      function drawradarGrah(data){
+      var labels = data.labels;
+      
+
+      var id='myradar';
+      var ctx = document.getElementById(id).getContext('2d');
+      var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'radar',
+        data:{
+        labels:labels,
+        datasets:[
+        {
+            label:'Temperature',
+            data:data.chartdata,
+            borderColor:'rgb(252, 186, 3)',
+            
+          },
+          {
+            label:'Humidity',
+            data:data.humidity,
+            borderColor:'rgb(41, 179, 34)',
+           
+          },
+          {
+            label:'WindSpeed',
+            data:data.windspeed,
+            borderColor:'rgb(222, 53, 38)',
+           
+          },
+
+        ]
+      },
+        // Configuration options go here
+        options: {
+          type: 'radar',
+          data: data,
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Chart.js Radar Chart'
+              }
+            }
+          },
+        }
+  
+      });
+      }
+
     </script>
 
 
